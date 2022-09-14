@@ -1,19 +1,31 @@
-import './App.css';
 import {
   HashRouter,
-  NavLink,
+  NavLink, Outlet, Route,
+  Routes,
+  useParams
 } from 'react-router-dom';
+import './App.css';
 
-const Todo = () => {
-  return <p>這是 Todo 頁面 
-  </p>;
-};
-const Login = () => {
-  return <p>這是登入頁面</p>;
-};
-const Register = () => {
-  return <p>這是註冊頁面</p>;
-};
+
+const Home = () => <p>Home page</p>;
+const Todo = () => <p>Todo page</p>;
+const Login = () => <p>Login page</p>;
+const Register = () => <p>Register page</p>;
+const Error = () => <p>Error page</p>;
+const Post = () => {
+  return (
+    <div>
+      <h3>Post page</h3>
+      <Outlet />
+    </div>
+  );
+}
+
+
+const PostId = () => {
+  let params = useParams();
+  return <p>Post ID: {params.userId}</p>;
+}
 
 function App() {
   return (
@@ -21,20 +33,32 @@ function App() {
       <HashRouter>
         <div className="nav-link">
           <NavLink to="/">
-            <p>回到首頁</p>
+            <p>Back</p>
           </NavLink>
           <NavLink to="/register">
-            <p>註冊頁面</p>
+            <p>Register page</p>
           </NavLink>
           <NavLink to="/login">
-            <p>登入頁面</p>
+            <p>Login page</p>
           </NavLink>
           <NavLink to="/todo">
-            <p>Todo 頁面</p>
+            <p>Todo page</p>
+          </NavLink>
+          <NavLink to="/post">
+            <p>Post page</p>
           </NavLink>
         </div>
-        {/* Routes, Route 練習區 */}
-        {/* 練習區 */}
+        
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/todo" element={<Todo />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/Post" element={<Post />}>
+            <Route path=":userId" element={<PostId />} />
+          </Route>
+          <Route path="*" element={<Error />} />
+        </Routes>
       </HashRouter>
     </div>
   );
